@@ -1,2 +1,2 @@
 #TeBoRs
-Telegram Bot Rss ReadeOpenSourceSo
+Telegram Bot Rss Reader
