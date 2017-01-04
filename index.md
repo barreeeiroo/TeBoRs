@@ -1,2 +1,0 @@
-#TeBoRs
-Telegram Bot RReaderJiejdFjdudjfjsifkfudjñññ
