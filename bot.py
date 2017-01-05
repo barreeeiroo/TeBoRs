@@ -17,7 +17,7 @@ GROUP_ID = "1057152889"
 FORUM_URL = "community.thunkable.com"
 
 # Declare the Feed
-rss_feed = (FORUM_URL + '/latest.rss')
+rss_feed = ("http://" + FORUM_URL + '/latest.rss')
 
 # Declares the Database
 DATABASE = "feed.db"
