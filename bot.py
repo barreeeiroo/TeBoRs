@@ -8,7 +8,7 @@ import sqlite3 # Library for the database
 ###################################################################
 
 #Declare the Token
-API_TOKEN = '235906872:AAGqwwYe-TbTzDoGeSxKaC9Fn0A-LzkyRAg'
+API_TOKEN = '310239734:AAH5AEFwvGMVTUZzohzYmUHZUnpTrvdTw0Q'
 
 # Declare the main group
 GROUP_ID = "1057152889"
@@ -80,15 +80,33 @@ def latest_topic(message):
 @bot.message_handler(commands=['latest_post'])
 def latest_post(message):
     bot.reply_to(message, """
-I am working on this command, sorry\n
+I am working on this command, sorry
 But you can use /latest\_topic to get the latest conversation in the community
     """,
     parse_mode="markdown")
 
-#Handle /ping
+# Handle /ping
 @bot.message_handler(commands=['ping'])
 def ping(message):
     bot.reply_to(message, "*p*_o_`n`g", parse_mode="markdown")
+
+# Handle /help
+@bot.message_handler(commands=['help'])
+def help(message):
+    bot.reply_to(message, """
+*Hello my friend* 👋
+I'm the *official bot of the* [Thunkable Community](http://community.thunkable.com). I'm here to help you in Telegram to use this community
+
+*This is what I can actually do:*
+/start - _Starts me_
+/help - _This command xD_
+/latest_topic - _Gives you the latest topic in the community_
+*Future funcitons:*
+- I will notify in @ThunkableGroup when a new topic is released in the community
+- You will be able to read any topic from Telegram
+
+Any question, just contact to *my creator*: @barreeeiroo
+    """, parse_mode="markdown")
 
 # Send forum update
 #def send_updates():
