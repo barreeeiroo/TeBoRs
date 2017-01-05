@@ -17,29 +17,29 @@ GROUP_ID = "1057152889"
 FORUM_URL = "community.thunkable.com"
 
 # Declare the Feed
-rss_url = feedparser.parse(FORUM_URL + '/latest.rss')
+rss_feed = (FORUM_URL + '/latest.rss')
 
 # Declares the Database
 DATABASE = "feed.db"
 
 ###################################################################
 
-conn = sqlite3.connect(DATABASE)
-db = conn.cursor()
-db.execute("CREATE TABLE IF NOT EXISTS latest_topic (id int);")
-conn.commit()
+#conn = sqlite3.connect(DATABASE)
+#db = conn.cursor()
+#db.execute("CREATE TABLE IF NOT EXISTS latest_topic (id int);")
+#conn.commit()
 
-def update_rss():
-    threading.Timer(60.0, update_rss).start()
-    latest_post_online = rss_url['entries'][0]['id'].replace(FORUM_URL + "-topic-", "")
-    print(int(latest_post_online)
-    latest_post_offline = db.execute("SELECT MAX(id) FROM latest_topic;")
-    print(latest_post_offline.fetchone())
-    #if latest_post_online > latest_post_offline:
-    #    db.execute("INSERT INTO latest_topic (id) VALUES (" + latest_post_online + ")")
-    #    conn.commit()
-    #    send_updates()
-update_rss()
+#def update_rss():
+#    threading.Timer(60.0, update_rss).start()
+#    latest_post_online = rss_url['entries'][0]['id'].replace(FORUM_URL + "-topic-", "")
+#    print(int(latest_post_online)
+#    latest_post_offline = db.execute("SELECT MAX(id) FROM latest_topic;")
+#    print(latest_post_offline.fetchone())
+#    if latest_post_online > latest_post_offline:
+#       db.execute("INSERT INTO latest_topic (id) VALUES (" + latest_post_online + ")")
+#       conn.commit()
+#       send_updates()
+#update_rss()
 
 ###################################################################
 
@@ -68,6 +68,7 @@ Check what I can do using the command /help!\
 # Handle /latest_topic
 @bot.message_handler(commands=['latest_topic'])
 def latest_topic(message):
+    rss_url = feedparser.parse(rss_feed)
     bot.reply_to(message, """*This is the latest public post in the community*\n\n""" +
     "*Title:* " + rss_url['entries'][0]['title'] + "\n" +
     "*Category:* " + rss_url['entries'][0]['category'] + "\n" +
@@ -90,13 +91,13 @@ def ping(message):
     bot.reply_to(message, "*p*_o_`n`g", parse_mode="markdown")
 
 # Send forum update
-def send_updates():
-    bot.send_message(GROUP_ID, "*New post in the community:* \n\n"
-"*Title:* " + rss_url['entries'][0]['title'] + "\n" +
-"*Category:* " + rss_url['entries'][0]['category'] + "\n" +
-"*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
-"_See it _[here](" + FORUM_URL + "/t/" + latest_post_online + ")",
-    parse_mode="markdown")
+#def send_updates():
+#    bot.send_message(GROUP_ID, "*New post in the community:* \n\n"
+#"*Title:* " + rss_url['entries'][0]['title'] + "\n" +
+#"*Category:* " + rss_url['entries'][0]['category'] + "\n" +
+#"*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
+#"_See it _[here](" + FORUM_URL + "/t/" + latest_post_online + ")",
+#    parse_mode="markdown")
 
 ###################################################################
 
