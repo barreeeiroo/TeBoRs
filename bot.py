@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import telebot # Bot API Library
 from telebot import types # Bot types API library
 import time # Library for the time
@@ -94,7 +97,7 @@ def ping(message):
 @bot.message_handler(commands=['help'])
 def help(message):
     bot.reply_to(message, """
-*Hello my friend* 👋
+*Hello my friend*
 I'm the *official bot of the* [Thunkable Community](http://community.thunkable.com). I'm here to help you in Telegram to use this community
 
 *This is what I can actually do:*
