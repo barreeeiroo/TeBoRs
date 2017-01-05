@@ -103,7 +103,7 @@ I'm the *official bot of the* [Thunkable Community](http://community.thunkable.c
 *This is what I can actually do:*
 /start - _Starts me_
 /help - _This command xD_
-/latest_topic - _Gives you the latest topic in the community_
+/latest\_topic - _Gives you the latest topic in the community_
 *Future funcitons:*
 - I will notify in @ThunkableGroup when a new topic is released in the community
 - You will be able to read any topic from Telegram
