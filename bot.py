@@ -76,7 +76,7 @@ def latest_topic(message):
     if message.chat.type != "private":
         bot.reply_to(message, "I've also sent you the content of the post in a Private Message to prevent flooding. _Remember to start me in Private ;)", parse_mode="markdown")
     bot.send_message(message.from_user.id, "<b>And this is the content of the post:<b><br><br>" +
-    rss_url['entries'][0]['content'],
+    rss_url['entries'][0]['description'],
     parse_mode="html")
 
 # Handle /latest_post
