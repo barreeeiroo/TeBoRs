@@ -75,8 +75,8 @@ def latest_topic(message):
     "_See it _[here](" + rss_url['entries'][0]['link'] + ")\n", parse_mode="markdown")
     if message.chat.type != "private":
         bot.reply_to(message, "I've also sent you the content of the post in a Private Message to prevent flooding. _Remember to start me in Private_", parse_mode="markdown")
-    bot.send_message(message.from_user.id, "<b>And this is the content of the post:</b>\n\n\n" +
-    rss_url['entries'][0]['description'].replace("<p>", "").replace("</p>", "").replace("<br>", "\n").replace("<blockquote>", "").replace("</blockquote>", ""),
+    bot.send_message(message.from_user.id, "<b>And this is the content of the post:</b><br><br><br>" +
+    rss_url['entries'][0]['description'].replace("<p>", "").replace("</p>", "").replace("<blockquote>", "").replace("</blockquote>", ""),
     parse_mode="html")
 
 # Handle /latest_post
