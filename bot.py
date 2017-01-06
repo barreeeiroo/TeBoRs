@@ -72,12 +72,9 @@ def latest_topic(message):
     "*Title:* " + rss_url['entries'][0]['title'] + "\n" +
     "*Category:* " + rss_url['entries'][0]['category'] + "\n" +
     "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
-    "_See it _[here](" + rss_url['entries'][0]['link'] + ")\n"
+    "_See it _[here](" + rss_url['entries'][0]['link'] + ")\n", parse_mode="markdown")
     if message.chat.type != "private":
-        + "I've also sent you the content of the post in a Private Message to prevent flooding. _Remember to start me in Private ;)",
-    else:
-        ,
-    parse_mode="markdown")
+        bot.reply_to(message, "I've also sent you the content of the post in a Private Message to prevent flooding. _Remember to start me in Private ;)", parse_mode="markdown")
     bot.send_message(message.from_user.id, "<b>And this is the content of the post:<b><br><br>" +
     rss_url['entries'][0]['content'],
     parse_mode="html")
