@@ -45,7 +45,7 @@ def update_rss():
     rss_url = feedparser.parse(rss_feed)
     latest_post_online = rss_url['entries'][0]['id']
     latest_post_online_id = latest_post_online.replace(FORUM_URL + "-topic-", "")
-    print(latest_post_online_id)
+    #print(latest_post_online_id)
     #latest_post_offline = db.execute("SELECT MAX(id) FROM latest_topic;")
     #print(latest_post_offline.fetchone())
 #    if latest_post_online > latest_post_offline:
@@ -72,8 +72,15 @@ def latest_topic(message):
     "*Title:* " + rss_url['entries'][0]['title'] + "\n" +
     "*Category:* " + rss_url['entries'][0]['category'] + "\n" +
     "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
-    "_See it _[here](" + rss_url['entries'][0]['link'] + ")",
+    "_See it _[here](" + rss_url['entries'][0]['link'] + ")\n"
+    if message.chat.type != "private":
+        + "I've also sent you the content of the post in a Private Message to prevent flooding. _Remember to start me in Private ;)",
+    else:
+        ,
     parse_mode="markdown")
+    bot.send_message(message.from_user.id, "<b>And this is the content of the post:<b><br><br>" +
+    rss_url['entries'][0]['content'],
+    parse_mode="html")
 
 # Handle /latest_post
 @bot.message_handler(commands=['latest_post'])
@@ -99,7 +106,8 @@ I'm the *official bot of the* [""" + FORUM_NAME + "](" + FORUM_URL + """). I'm h
 *This is what I can actually do:*
 /start - _Starts me_
 /help - _This command xD_
-/latest\_topic - _Gives you the latest topic in the community_
+/latest\_topic - _Gives you the latest topic in the forum_
+/latest - _Sends you in a PM the 10 latest topics in the forum_
 *Future funcitons:*
 - I will notify in """ + GROUP_NAME + """ when a new topic is released in the forum
 - You will be able to read any topic from Telegram
