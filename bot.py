@@ -32,9 +32,9 @@ def listener(messages):
         uid = m.from_user.id
         if m.content_type == 'text': # Sólo saldrán en el log los mensajes tipo texto
             if cid > 0:
-                user_message = "Private Message: \"" + str(m.from_user.first_name) + " " + str(m.from_user.last_name) + "\" [" + str(cid) + "] -> " + m.text
+                user_message = "New Message: \"" + str(m.from_user.first_name) + " " + str(m.from_user.last_name) + "\" [" + str(cid) + "] -> " + m.text
             else:
-                user_message = "Group Messsage: \"" + str(m.from_user.first_name) + " " + str(m.from_user.last_name) + "\" [" + str(cid) + "] -> " + m.text
+                user_message = "New Messsage: \"" + str(m.from_user.first_name) + " " + str(m.from_user.last_name) + "\" [" + str(cid) + "] -> " + m.text
             f = open('log.txt', 'a')
             f.write(user_message + "\n")
             f.close()
