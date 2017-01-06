@@ -8,7 +8,7 @@ ADMIN_ID = "210903833"
 
 # Declare the main group
 GROUP_NAME = "@ThunkableGroup"
-GROUP_ID = "1057152889"
+GROUP_ID = "-1001057152889"
 
 #Declare the Forum
 FORUM_NAME = "Thunkable Community"

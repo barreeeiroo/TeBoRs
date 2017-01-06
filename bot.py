@@ -1,62 +1,72 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import telebot # Bot API Library
-from telebot import types # Bot types API library
-import time # Library for the time
-import feedparser # Imports the feed reader
-import threading # Library for the counter
-import sqlite3 # Library for the database
-import sys # Import system libraries
-from config import * # Imports the config file
+import telebot              # Bot API Library
+from telebot import types   # Bot types API library
+import time                 # Library for the time
+import feedparser           # Imports the feed reader
+import threading            # Library for the counter
+import sqlite3              # Library for the database
+import sys                  # Import system libraries
+from config import *        # Imports the config file
 
-###################################################################
+###################################################################   INIT
 
-# Encode Emojis
-#reload(sys)
-#sys.setdefaultencoding("utf-8")
-
-# Makes the bot
+# Make the bot
 bot = telebot.TeleBot(API_TOKEN)
 
-#Listener
+# Starts the database
+conn = sqlite3.connect(DATABASE)
+db = conn.cursor()
+
+db.execute("CREATE TABLE IF NOT EXISTS latest_topic (id int);")
+db.execute("INSERT INTO latest_topic (id) SELECT '1' WHERE NOT EXISTS (SELECT * FROM latest_topic)")
+conn.commit()
+
+###################################################################   FUNCTIONS
+
+# Listener
 def listener(messages):
     for m in messages:
         cid = m.chat.id
         uid = m.from_user.id
         if m.content_type == 'text': # Sólo saldrán en el log los mensajes tipo texto
             if cid > 0:
-                mensaje = "\"" + str(m.from_user.first_name) + " " + str(m.from_user.last_name) + "\" [" + str(cid) + "] -> " + m.text
+                user_message = "Private Message: \"" + str(m.from_user.first_name) + " " + str(m.from_user.last_name) + "\" [" + str(cid) + "] -> " + m.text
             else:
-                mensaje = "\"" + str(m.from_user.first_name) + " " + str(m.from_user.last_name) + "\" [" + str(cid) + "] -> " + m.text
+                user_message = "Group Messsage: \"" + str(m.from_user.first_name) + " " + str(m.from_user.last_name) + "\" [" + str(cid) + "] -> " + m.text
             f = open('log.txt', 'a')
-            f.write(mensaje + "\n")
+            f.write(user_message + "\n")
             f.close()
-            print(mensaje)
+            print(user_message)
 bot.set_update_listener(listener)
 
-# Feed Updates
-conn = sqlite3.connect(DATABASE)
-db = conn.cursor()
-db.execute("CREATE TABLE IF NOT EXISTS latest_topic (id int);")
-
+# Update to get the latest topic in RSS
 def update_rss():
-    #threading.Timer(60.0, update_rss).start()
+    threading.Timer(60.0, update_rss).start()
     rss_url = feedparser.parse(rss_feed)
-    latest_post_online = rss_url['entries'][0]['id']
-    latest_post_online_id = latest_post_online.replace(FORUM_URL + "-topic-", "")
-    #print(latest_post_online_id)
-    #latest_post_offline = db.execute("SELECT MAX(id) FROM latest_topic;")
-    #print(latest_post_offline.fetchone())
-#    if latest_post_online > latest_post_offline:
-#       db.execute("INSERT INTO latest_topic (id) VALUES (" + latest_post_online + ")")
-#       conn.commit()
-#       send_updates()
+    print("Fetching RSS...")
+    latest_topic_online = rss_url['entries'][0]['id']
+    latest_topic_online_id = latest_topic_online.replace(FORUM_URL + "-topic-", "")
+#    latest_topic_offline = db.execute("SELECT MAX(id) FROM latest_topic;")
+#    conn.commit()
+#    latest_topic_offline_id = latest_topic_offline.fetchone()[0]
+#    if int(latest_topic_online_id) > int(latest_topic_offline_id):
+#        print("New topic in the community: " + latest_topic_online_id)
+#        database()
+#        db.execute("INSERT INTO latest_topic (id) VALUES (" + latest_topic_online_id + ");")
+#        conn.commit()
+#        bot.send_message(GROUP_ID, "*New post in the community:* \n\n"
+#        "*Title:* " + rss_url['entries'][0]['title'] + "\n" +
+#        "*Category:* " + rss_url['entries'][0]['category'] + "\n" +
+#        "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
+#        "_See it _[here](" + FORUM_URL + "/t/" + latest_topic_online + ")",
+#        parse_mode="markdown")
 update_rss()
 
-###################################################################
+###################################################################   MAIN COMMANDS
 
-# Handle '/start'
+# Handle /start
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.reply_to(message, """\
@@ -173,18 +183,12 @@ _Remember to start me in your account to allow me to send you the topic_
         "*ID:* " + rss_url['entries'][9]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][9]['title'] + "](" + rss_url['entries'][9]['link'],
         parse_mode="markdown")
 
-# Send forum update
-#def send_updates():
-#    bot.send_message(GROUP_ID, "*New post in the community:* \n\n"
-#"*Title:* " + rss_url['entries'][0]['title'] + "\n" +
-#"*Category:* " + rss_url['entries'][0]['category'] + "\n" +
-#"*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
-#"_See it _[here](" + FORUM_URL + "/t/" + latest_post_online + ")",
-#    parse_mode="markdown")
-
-###################################################################
+###################################################################   MANAGER
 
 # Start the bot
 print("Bot ON")
 bot.polling()
+
+# Close the bot
 print("Bot OFF")
+conn.close()
