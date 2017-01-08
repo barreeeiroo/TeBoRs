@@ -7,6 +7,7 @@ import time                     # Library for the time
 import feedparser               # Imports the feed reader
 import threading                # Library for the counter
 import sys                      # Import system libraries
+import MySQLdb                  # Import MySQL libraries
 from config import *            # Imports the config file
 
 ###################################################################   INIT
@@ -15,10 +16,10 @@ from config import *            # Imports the config file
 bot = telebot.TeleBot(API_TOKEN)
 
 # Starts the database
-#db = mysql.connector.connect(user=DB_USER, password=DB_PASS, host=DB_HOST, database=DB_NAME)
-#cur = db.cursor()
-#cur.execute("CREATE TABLE IF NOT EXISTS `latest_topic` ( `id` INT(10) NOT NULL );")
-#cur.execute("INSERT INTO latest_topic (id) SELECT '0' WHERE NOT EXISTS (SELECT * FROM latest_topic);")
+db = MySQLdb.connect(user=DB_USER, passwd=DB_PASS, host=DB_HOST, db=DB_NAME)
+cur = db.cursor()
+cur.execute("CREATE TABLE IF NOT EXISTS latest_topic (id int(10));")
+cur.execute("INSERT INTO latest_topic (id) VALUES ('0')")
 
 ###################################################################   FUNCTIONS
 
@@ -43,25 +44,25 @@ def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)
 
 # Update to get the latest topic in RSS
-#def update_rss():
-#    threading.Timer(60.0, update_rss).start()
-#    rss_url = feedparser.parse(rss_feed)
-#    print("Fetching RSS...")
-#    latest_topic_online = rss_url['entries'][0]['id']
-#    latest_topic_online_id = latest_topic_online.replace(FORUM_URL + "-topic-", "")
-#    latest_topic_offline = cur.execute("SELECT MAX(id) FROM latest_topic;")
-#    for row in cur.fetchall():
-#        latest_topic_offline_id = row[0]
-#    if int(latest_topic_online_id) > int(latest_topic_offline_id):
-#        print("New topic in the community: " + latest_topic_online_id)
-#        cur.execute("INSERT INTO latest_topic (id) VALUES (\'" + latest_topic_online_id + "\');")
-#        bot.send_message(GROUP_ID, "*New post in the community:* \n\n"
-#        "*Title:* " + rss_url['entries'][0]['title'] + "\n" +
-#        "*Category:* " + rss_url['entries'][0]['category'] + "\n" +
-#        "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
-#        "_See it _[here](" + FORUM_URL + "/t/" + latest_topic_online + ")",
-#        parse_mode="markdown")
-#update_rss()
+def update_rss():
+    threading.Timer(60.0, update_rss).start()
+    rss_url = feedparser.parse(rss_main_feed)
+    print("Fetching RSS...")
+    latest_topic_online = rss_url['entries'][0]['id']
+    latest_topic_online_id = latest_topic_online.replace(FORUM_URL + "-topic-", "")
+    latest_topic_offline = cur.execute("SELECT MAX(id) FROM latest_topic;")
+    for row in cur.fetchall():
+        latest_topic_offline_id = row[0]
+    if int(latest_topic_online_id) > int(latest_topic_offline_id):
+        print("New topic in the community: " + latest_topic_online_id)
+        cur.execute("INSERT INTO latest_topic (id) VALUES (\'" + latest_topic_online_id + "\');")
+        bot.send_message(GROUP_ID, "*New topic in the community:* \n\n"
+        "*Title:* " + rss_url['entries'][0]['title'] + "\n" +
+        "*Category:* " + rss_url['entries'][0]['category'] + "\n" +
+        "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
+        "_See it _[here](" + FORUM_URL + "/t/" + latest_topic_online + ")",
+        parse_mode="markdown")
+update_rss()
 
 ###################################################################   MAIN COMMANDS
 
