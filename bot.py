@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import telebot              # Bot API Library
-from telebot import types   # Bot types API library
-import time                 # Library for the time
-import feedparser           # Imports the feed reader
-import threading            # Library for the counter
-import sqlite3              # Library for the database
-import sys                  # Import system libraries
-from config import *        # Imports the config file
+import telebot                  # Bot API Library
+from telebot import types       # Bot types API library
+import time                     # Library for the time
+import feedparser               # Imports the feed reader
+import threading                # Library for the counter
+import sys                      # Import system libraries
+from config import *            # Imports the config file
 
 ###################################################################   INIT
 
@@ -16,12 +15,10 @@ from config import *        # Imports the config file
 bot = telebot.TeleBot(API_TOKEN)
 
 # Starts the database
-conn = sqlite3.connect(DATABASE)
-db = conn.cursor()
-
-db.execute("CREATE TABLE IF NOT EXISTS latest_topic (id int);")
-db.execute("INSERT INTO latest_topic (id) SELECT '1' WHERE NOT EXISTS (SELECT * FROM latest_topic)")
-conn.commit()
+#db = mysql.connector.connect(user=DB_USER, password=DB_PASS, host=DB_HOST, database=DB_NAME)
+#cur = db.cursor()
+#cur.execute("CREATE TABLE IF NOT EXISTS `latest_topic` ( `id` INT(10) NOT NULL );")
+#cur.execute("INSERT INTO latest_topic (id) SELECT '0' WHERE NOT EXISTS (SELECT * FROM latest_topic);")
 
 ###################################################################   FUNCTIONS
 
@@ -41,28 +38,30 @@ def listener(messages):
             print(user_message)
 bot.set_update_listener(listener)
 
+# Has Numbers Checker
+def hasNumbers(inputString):
+    return any(char.isdigit() for char in inputString)
+
 # Update to get the latest topic in RSS
-def update_rss():
-    threading.Timer(60.0, update_rss).start()
-    rss_url = feedparser.parse(rss_feed)
-    print("Fetching RSS...")
-    latest_topic_online = rss_url['entries'][0]['id']
-    latest_topic_online_id = latest_topic_online.replace(FORUM_URL + "-topic-", "")
-#    latest_topic_offline = db.execute("SELECT MAX(id) FROM latest_topic;")
-#    conn.commit()
-#    latest_topic_offline_id = latest_topic_offline.fetchone()[0]
+#def update_rss():
+#    threading.Timer(60.0, update_rss).start()
+#    rss_url = feedparser.parse(rss_feed)
+#    print("Fetching RSS...")
+#    latest_topic_online = rss_url['entries'][0]['id']
+#    latest_topic_online_id = latest_topic_online.replace(FORUM_URL + "-topic-", "")
+#    latest_topic_offline = cur.execute("SELECT MAX(id) FROM latest_topic;")
+#    for row in cur.fetchall():
+#        latest_topic_offline_id = row[0]
 #    if int(latest_topic_online_id) > int(latest_topic_offline_id):
 #        print("New topic in the community: " + latest_topic_online_id)
-#        database()
-#        db.execute("INSERT INTO latest_topic (id) VALUES (" + latest_topic_online_id + ");")
-#        conn.commit()
+#        cur.execute("INSERT INTO latest_topic (id) VALUES (\'" + latest_topic_online_id + "\');")
 #        bot.send_message(GROUP_ID, "*New post in the community:* \n\n"
 #        "*Title:* " + rss_url['entries'][0]['title'] + "\n" +
 #        "*Category:* " + rss_url['entries'][0]['category'] + "\n" +
 #        "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
 #        "_See it _[here](" + FORUM_URL + "/t/" + latest_topic_online + ")",
 #        parse_mode="markdown")
-update_rss()
+#update_rss()
 
 ###################################################################   MAIN COMMANDS
 
@@ -74,34 +73,27 @@ Hi there, I the Official Bot of the [""" + FORUM_NAME + "](" + FORUM_URL + """).
 Check what I can do using the command /help!\
 """, parse_mode="markdown")
 
-# Handle /latest_topic
-@bot.message_handler(commands=['latest_topic'])
-def latest_topic(message):
-    rss_url = feedparser.parse(rss_feed)
-    bot.reply_to(message, """*This is the latest public post in the """ + FORUM_NAME + """*\n\n""" +
-    "*Title:* " + rss_url['entries'][0]['title'] + "\n" +
-    "*Category:* " + rss_url['entries'][0]['category'] + "\n" +
-    "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
-    "_See it _[here](" + rss_url['entries'][0]['link'] + ")\n", parse_mode="markdown")
-    if message.chat.type != "private":
-        bot.reply_to(message, "I've also sent you the content of the post in a Private Message to prevent flooding. _Remember to start me in Private_", parse_mode="markdown")
-    #bot.send_message(message.from_user.id, "<b>And this is the content of the post:</b><br><br><br>" +
-    #rss_url['entries'][0]['description'].replace("<p>", "").replace("</p>", "").replace("<blockquote>", "").replace("</blockquote>", ""),
-    #parse_mode="html")
 
 # Handle /latest_post
 @bot.message_handler(commands=['latest_post'])
 def latest_post(message):
     bot.reply_to(message, """
-I am working on this command, sorry
-But you can use /latest\_topic to get the latest conversation in the forum
-    """,
-    parse_mode="markdown")
+*Unused command* - Use instead `/latest post`
+    """, parse_mode="markdown")
+
+# Handle /latest_topic
+@bot.message_handler(commands=['latest_topic'])
+def latest_post(message):
+    bot.reply_to(message, """
+*Unused command* - Use instead `/latest topic`
+    """, parse_mode="markdown")
+
 
 # Handle /ping
 @bot.message_handler(commands=['ping'])
 def ping(message):
     bot.reply_to(message, "*p*_o_`n`g", parse_mode="markdown")
+
 
 # Handle /help
 @bot.message_handler(commands=['help'])
@@ -110,14 +102,24 @@ def help(message):
 *Hello my friend*
 I'm the *official bot of the* [""" + FORUM_NAME + "](" + FORUM_URL + """). I'm here to help you in Telegram to use this community
 
-*This is what I can actually do:*
-/start - _Starts me_
-/help - _This command xD_
-/latest\_topic - _Gives you the latest topic in the forum_
-/latest - _Sends you in a PM the 10 latest topics in the forum_
-*Future funcitons:*
-- I will notify in """ + GROUP_NAME + """ when a new topic is released in the forum
-- You will be able to read any topic from Telegram
+*List of commands:*
+- How to use
+  `{foo / boo}` - _Choose one between those options_
+  `[number]` - _Compulsory argument_
+  `(number)` - _Optional argument_
+  `'number'` - _Change 'number' for a real number
+
+- Management Commands
+  /start - _Starts me_
+  /help - _This command xD_
+  /ping - _Checks if the bot is running_
+
+- Feed Commands
+/latest `{topic / post / number ['number']}` - _Gives you the _`selection`_ in the forum or the latest _`number`_ of topics_
+
+- Future Commands
+  _I will notify in """ + GROUP_NAME + """ when a new topic is released in the forum
+  You will be able to read any topic from Telegram_
 
 Any question, just contact to *my creator*: @barreeeiroo
     """, parse_mode="markdown")
@@ -147,41 +149,76 @@ _Remember to start me in your account to allow me to send you the topic_
             "_See it <a href='"+ topic_rss['entries'][0]['link'] + "'>here</a>"
             , parse_mode="html")
 
+###################################################################   RSS COMMANDS
+
 # Handle /latest
 @bot.message_handler(commands=['latest'])
-def latest(message):
-    if message.chat.type != "private":
-        bot.reply_to(message, """
-*I've sent you the latest topics in a Private Message*
-_Remember to start me in your account to allow me to send you the topic_
-        """, parse_mode="markdown")
-        rss_url = feedparser.parse(rss_feed)
-        bot.send_message(message.from_user.id, "*The latest 10 topics in  " + FORUM_NAME + " are* _(ordered from newest to oldest)_*:*\n\n\n"
-        "*ID:* " + rss_url['entries'][0]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][0]['title'] + "](" + rss_url['entries'][0]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][1]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][1]['title'] + "](" + rss_url['entries'][1]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][2]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][2]['title'] + "](" + rss_url['entries'][2]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][3]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][3]['title'] + "](" + rss_url['entries'][3]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][4]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][4]['title'] + "](" + rss_url['entries'][4]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][5]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][5]['title'] + "](" + rss_url['entries'][5]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][6]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][6]['title'] + "](" + rss_url['entries'][6]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][7]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][7]['title'] + "](" + rss_url['entries'][7]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][8]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][8]['title'] + "](" + rss_url['entries'][8]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][9]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][9]['title'] + "](" + rss_url['entries'][9]['link'],
-        parse_mode="markdown")
+def latest_topic(message):
+    latest_message = message.text
+    latest_get = latest_message.replace('/latest ','')
+    # Sends error if missing argument
+    if latest_get is None:
+        bot.reply_to(message, "*Error: Missing information* - Please send me again the command using this method: `/latest <topic/post>`. If you need more help, send me the command /help", parse_mode="markdown")
+    # If not
     else:
-        rss_url = feedparser.parse(rss_feed)
-        bot.reply_to(message, "*The latest 10 topics in  " + FORUM_NAME + " are* _(ordered from newest to oldest)_*:*\n\n\n"
-        "*ID:* " + rss_url['entries'][0]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][0]['title'] + "](" + rss_url['entries'][0]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][1]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][1]['title'] + "](" + rss_url['entries'][1]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][2]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][2]['title'] + "](" + rss_url['entries'][2]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][3]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][3]['title'] + "](" + rss_url['entries'][3]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][4]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][4]['title'] + "](" + rss_url['entries'][4]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][5]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][5]['title'] + "](" + rss_url['entries'][5]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][6]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][6]['title'] + "](" + rss_url['entries'][6]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][7]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][7]['title'] + "](" + rss_url['entries'][7]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][8]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][8]['title'] + "](" + rss_url['entries'][8]['link'] + ")\n\n" +
-        "*ID:* " + rss_url['entries'][9]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][9]['title'] + "](" + rss_url['entries'][9]['link'],
-        parse_mode="markdown")
+        # Handle /latest topic
+        if latest_get == "topic":
+            rss_url = feedparser.parse(rss_topics_feed)
+            message_to_send = "*This is the latest public topic in the " + FORUM_NAME + "*\n\n" + "*Title:* " + rss_url['entries'][0]['title'] + "\n" + "*Category:* " + rss_url['entries'][0]['category'] + "\n" + "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" + "_See it _[here](" + rss_url['entries'][0]['link'] + ")"
+            # Sends the content of the topic in a pm
+            if message.chat.type != "private":
+                message_to_send = message_to_send + "\n\n\nI've also sent you the content of the first message of the topic in a Private Message to prevent flooding. _Remember to start me in Private_"
+                bot.reply_to(message, message_to_send, parse_mode="markdown")
+            else:
+                bot.reply_to(message, message_to_send, parse_mode="markdown")
+        # Handle /latest post
+        elif latest_get == "post":
+            rss_url = feedparser.parse(rss_posts_feed)
+            message_to_send = """*This is the latest public post in the """ + FORUM_NAME + """*\n\n""" + "*Main topic:* " + rss_url['entries'][0]['title'] + "\n" + "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" + "_See it _[here](" + rss_url['entries'][0]['link'] + ")"
+            # Sends the content of the post in a pm
+            if message.chat.type != "private":
+                message_to_send = message_to_send + "\n\n\nI've also sent you the content of the post in a Private Message to prevent flooding. _Remember to start me in Private_"
+                bot.reply_to(message, message_to_send, parse_mode="markdown")
+            else:
+                bot.reply_to(message, message_to_send, parse_mode="markdown")
+        # Handle /latest number for sending the latest 'number' of topics
+        elif hasNumbers(latest_get):
+            latest_get_number = latest_get
+            rss_url = feedparser.parse(rss_topics_feed)
+            # If not in a pm, sends it
+            if message.chat.type != "private":
+                bot.reply_to(message, "*I've sent you the latest topics in a Private Message*\n_Remember to start me in your account to allow me to send you the message_", parse_mode="markdown")
+                counter = 0
+                message_to_send = "*The latest " + latest_get + " topics in  " + FORUM_NAME + " are* _(ordered from newest to oldest)_*:*\n\n\n"
+                list_topics = ""
+                while True:
+                    list_topics = list_topics + "*ID:* " + rss_url['entries'][counter]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][counter]['title'] + "](" + rss_url['entries'][counter]['link'] + ")\n\n"
+                    counter = counter + 1
+                    if counter >= int(latest_get_number):
+                        bot.send_message(message.from_user, message_to_send + list_topics, parse_mode="markdown")
+                        break
+            else:
+                counter = 0
+                message_to_send = "*The latest " + latest_get_number + " topics in  " + FORUM_NAME + " are* _(ordered from newest to oldest)_*:*\n\n\n"
+                list_topics = ""
+                while True:
+                    list_topics = list_topics + "*ID:* " + rss_url['entries'][counter]['id'].replace(FORUM_URL + "-topic-", "") + " - *Title:* [" + rss_url['entries'][counter]['title'] + "](" + rss_url['entries'][counter]['link'] + ")\n\n"
+                    counter = counter + 1
+                    if counter >= int(latest_get_number):
+                        bot.reply_to(message, message_to_send + list_topics, parse_mode="markdown")
+                        break
+        else:
+            bot.reply_to(message, "*Error - Unrecognized request* - Please, checkout the command /help to get a complete list of supported commands", parse_mode="markdown")
+
+@bot.message_handler(commands=['test'])
+def command_help(message):
+    markup = types.InlineKeyboardMarkup()
+    itembtna = types.InlineKeyboardButton('a', switch_inline_query="")
+    itembtnv = types.InlineKeyboardButton('v', switch_inline_query="")
+    itembtnc = types.InlineKeyboardButton('c', switch_inline_query="")
+    markup.row(itembtna)
+    markup.row(itembtnv, itembtnc)
+    bot.send_message(message.chat.id, "Choose one letter:", reply_markup=markup)
 
 ###################################################################   MANAGER
 
@@ -191,4 +228,4 @@ bot.polling()
 
 # Close the bot
 print("Bot OFF")
-conn.close()
+#db.close()

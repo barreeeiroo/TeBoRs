@@ -8,15 +8,20 @@ ADMIN_ID = "210903833"
 
 # Declare the main group
 GROUP_NAME = "@ThunkableGroup"
-GROUP_ID = "-1001057152889"
+GROUP_ID = "210903833"
 
 #Declare the Forum
 FORUM_NAME = "Thunkable Community"
 FORUM_PROTOCOL = "http://"
 FORUM_URL = "community.thunkable.com"
 
-# Declare the Main Feed
-rss_feed = (FORUM_PROTOCOL + FORUM_URL + '/latest.rss')
+# Declare the Feeds
+rss_topics_feed = (FORUM_PROTOCOL + FORUM_URL + '/latest.rss')
+rss_posts_feed = (FORUM_PROTOCOL + FORUM_URL + '/posts.rss')
+rss_main_feed = (FORUM_PROTOCOL + FORUM_URL + '/latest.rss')
 
 # Declares the Database
-DATABASE = "feed.db"
+DB_NAME = "feed"
+DB_HOST = "localhost"
+DB_USER = "TeBoRs"
+DB_PASS = "Telegram_Rocks"
