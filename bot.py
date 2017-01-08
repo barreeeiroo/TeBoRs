@@ -107,7 +107,7 @@ I'm the *official bot of the* [""" + FORUM_NAME + "](" + FORUM_URL + """). I'm h
   `{foo / boo}` - _Choose one between those options_
   `[number]` - _Compulsory argument_
   `(number)` - _Optional argument_
-  `'number'` - _Change 'number' for a real number
+  `'number'` - _Change 'number' for a real number_
 
 - Management Commands
   /start - _Starts me_
@@ -118,7 +118,7 @@ I'm the *official bot of the* [""" + FORUM_NAME + "](" + FORUM_URL + """). I'm h
 /latest `{topic / post / number ['number']}` - _Gives you the _`selection`_ in the forum or the latest _`number`_ of topics_
 
 - Future Commands
-  _I will notify in """ + GROUP_NAME + """ when a new topic is released in the forum
+  _I will notify in _""" + GROUP_NAME + """_ when a new topic is released in the forum
   You will be able to read any topic from Telegram_
 
 Any question, just contact to *my creator*: @barreeeiroo
@@ -155,7 +155,7 @@ _Remember to start me in your account to allow me to send you the topic_
 @bot.message_handler(commands=['latest'])
 def latest_topic(message):
     latest_message = message.text
-    latest_get = latest_message.replace('/latest ','')
+    latest_get = latest_message.replace('/latest','')
     # Sends error if missing argument
     if latest_get is None:
         bot.reply_to(message, "*Error: Missing information* - Please send me again the command using this method: `/latest <topic/post>`. If you need more help, send me the command /help", parse_mode="markdown")
@@ -208,17 +208,7 @@ def latest_topic(message):
                         bot.reply_to(message, message_to_send + list_topics, parse_mode="markdown")
                         break
         else:
-            bot.reply_to(message, "*Error - Unrecognized request* - Please, checkout the command /help to get a complete list of supported commands", parse_mode="markdown")
-
-@bot.message_handler(commands=['test'])
-def command_help(message):
-    markup = types.InlineKeyboardMarkup()
-    itembtna = types.InlineKeyboardButton('a', switch_inline_query="")
-    itembtnv = types.InlineKeyboardButton('v', switch_inline_query="")
-    itembtnc = types.InlineKeyboardButton('c', switch_inline_query="")
-    markup.row(itembtna)
-    markup.row(itembtnv, itembtnc)
-    bot.send_message(message.chat.id, "Choose one letter:", reply_markup=markup)
+            bot.reply_to(message, "*Error: Unrecognized request* - Please, checkout the command /help to get a complete list of supported commands", parse_mode="markdown")
 
 ###################################################################   MANAGER
 
