@@ -1,3 +1,0 @@
-# TeBoRs
-
-### Under Developing ;)
