@@ -60,7 +60,7 @@ def update_rss():
     print("Fetching RSS...")
     latest_topic_online = rss_url['entries'][0]['id']
     latest_topic_online_id = latest_topic_online.replace(FORUM_URL + "-topic-", "")
-    latest_topic_offline = cur.execute("SELECT MAX(id) FROM latest_topic;")
+    latest_topic_offline = cur.execute("SELECT MAX(id) FROM latest_topic LIMIT 1;")
     for row in cur.fetchall():
         latest_topic_offline_id = row[0]
     if int(latest_topic_online_id) > int(latest_topic_offline_id):
