@@ -8,27 +8,15 @@ Simple, Useful and OpenSource
 ### Table of Contents
 
 * [What is this bot for](#getting-started)
-
 * [Installation](#writing-your-first-bot)
-
   * [Prerequisites](#prerequisites)
-  
   * [Setup](#seup)
-  
   * [Running](#running)
-  
   * [Update](#update)
-  
 * [How to use](#how-to-use)
-
   * [Admin](#admin)
-  
   * [User](#user)
-  
 * [Support](#support)
-
   * [Future Functions](#future-functions)
-  
   * [Issues](#issues)
-  
   * [Credits](#credits)
