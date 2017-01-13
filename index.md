@@ -1,10 +1,7 @@
-# **TeBoRs** (for [Discourse Forums](http://discourse.org))
+# TeBoRs (for [Discourse Forums](http://discourse.org))
 Simple, Useful and OpenSource
-
 ---
-
 [![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://github.com/barreeeiroo/TeBoRs)
-
 ### Table of Contents
 
 * [What is this bot for](#getting-started)
