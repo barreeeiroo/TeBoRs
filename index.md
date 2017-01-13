@@ -33,10 +33,12 @@ You will be able to read any topic or post from the bot, and even to reply anony
 If you want to install the bot, you will need a VPS (VirtualPrivateServer) or a CloudService like [Cloud9](https://c9.io) for hosting it
 It works on Linux, Windows or MAC OS
 
-## Prequisites
+### Prequisites
 For been able to run the bot, you will have to install this packages in your system:
+
 - Git
 - Python3
+- MySQL Server
 - feedparser
 - MySQLdb
 
@@ -47,6 +49,7 @@ If you are on Ubuntu or Debian-based systems, execute these commands:
 ```bash
 sudo apt-get install git
 sudo apt-get install python3
+sudo apt-get install mysqld
 sudo apt-get install python-mysqldb
 pip3 install feedparser
 ```
@@ -57,6 +60,7 @@ If you are on CentOS or based distros, execute these commands:
 ```bash
 sudo yum install git
 sudo yum install python3
+sudo yum install mariadb
 sudo yum install python-mysqldb
 pip3 install feedparser
 ```
@@ -66,6 +70,32 @@ If you are on Windows OS, you will have to download Python3, Git and MySQLDB ins
 
  - [Git Installer](https://git-scm.com/download/win)
  - [Python3 Installer](https://www.python.org/downloads/windows/)
+ - For MySQL in Windows you can use [XAMPP Server](https://www.apachefriends.org/)
  - [MySQLDB Installer](http://stackoverflow.com/questions/21440230/install-mysql-python-windows): Follow that small tutorial
  
-Aftet that, execute this command in CMD with Administrator Permissions: `pip install feedparser`
+Aftet that, execute this command in CMD with Administrator Permissions to install feedparser: `pip install feedparser`
+
+---
+
+### Setup
+Now it's time to clone the bot and configure it. Clone the repository using this command:
+
+```bash
+git clone -b discourse https://github.com/barreeeiroo/TeBoRs
+```
+
+When you have succesfully cloned it, open `config.py` file using an editor like _nano_ or _vim_ and change these settings:
+
+- *API_TOKEN     * = Setup your own BotFather ApiToken
+- *ADMIN_NAME    * = Your Telegram Name
+- *ADMIN_NICKAME * = Your Telegram Nickname
+- *ADMIN_ID      * = Your Telegram ID
+- *GROUP_NAME    * = The main group nickname if it's publick, or the name if it's private
+- *GROUP_ID      * = The group ID
+- *FORUM_NAME    * = The name of the Discourse Forum
+- *FORUM_PROTOCOL* = The protocol that you are actually using (https or http)
+- *FORUM_URL     * = The domain for your community
+- *DB_NAME       * = Your MySQL database
+- *DB_HOST       * = Your MySQL host (usually `localhost`)
+- *DB_USER       * = Your MySQL user
+- *DB_PASS       * = Your MySQL user's password
