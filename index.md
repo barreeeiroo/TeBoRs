@@ -22,6 +22,7 @@ Simple, Useful and OpenSource
   * [Credits](#credits)
   
 ---
+---
 
 ## What is this bot for
 This bot has been made for helping Discourse users in Telegram to read and be notified for topics in a community
@@ -65,6 +66,9 @@ sudo yum install python-mysqldb
 pip3 install feedparser
 ```
 
+#### Mac OS
+We couldn't test it on Mac OS system, but you can Google for how to install those packages in your OS
+
 #### Windows
 If you are on Windows OS, you will have to download Python3, Git and MySQLDB installers manually from these links:
 
@@ -86,16 +90,47 @@ git clone -b discourse https://github.com/barreeeiroo/TeBoRs
 
 When you have succesfully cloned it, open `config.py` file using an editor like _nano_ or _vim_ and change these settings:
 
-- *API_TOKEN     * = Setup your own BotFather ApiToken
-- *ADMIN_NAME    * = Your Telegram Name
-- *ADMIN_NICKAME * = Your Telegram Nickname
-- *ADMIN_ID      * = Your Telegram ID
-- *GROUP_NAME    * = The main group nickname if it's publick, or the name if it's private
-- *GROUP_ID      * = The group ID
-- *FORUM_NAME    * = The name of the Discourse Forum
-- *FORUM_PROTOCOL* = The protocol that you are actually using (https or http)
-- *FORUM_URL     * = The domain for your community
-- *DB_NAME       * = Your MySQL database
-- *DB_HOST       * = Your MySQL host (usually `localhost`)
-- *DB_USER       * = Your MySQL user
-- *DB_PASS       * = Your MySQL user's password
+- **API_TOKEN     ** = Setup your own BotFather ApiToken
+- **ADMIN_NAME    ** = Your Telegram Name
+- **ADMIN_NICKAME ** = Your Telegram Nickname
+- **ADMIN_ID      ** = Your Telegram ID
+- **GROUP_NAME    ** = The main group nickname if it's publick, or the name if it's private
+- **GROUP_ID      ** = The group ID
+- **FORUM_NAME    ** = The name of the Discourse Forum
+- **FORUM_PROTOCOL** = The protocol that you are actually using (https or http)
+- **FORUM_URL     ** = The domain for your community
+- **DB_NAME       ** = Your MySQL database
+- **DB_HOST       ** = Your MySQL host (usually `localhost`)
+- **DB_USER       ** = Your MySQL user
+- **DB_PASS       ** = Your MySQL user's password
+
+---
+
+### Running
+For running the bot in tests mode, you can simple execute the command
+
+```bash
+python3 bot.py
+```
+
+But if you want to make the bot running forever, you will have to install the package `screen` for your OS and execute in the terminal
+
+```bash
+screen python3 bot.py
+```
+and with it if you close your screen the bot will be running in the background
+
+---
+
+### Updtate
+To update the bot to the latest version, just run this command in your folder:
+
+```bash
+git pull
+```
+
+But if you get any error like _Files must be commited_ or similar, then save your config.py file in your HardDrive, delete the folder TeBoRs and clone again and paste your config.py file
+
+---
+---
+
