@@ -1,4 +1,5 @@
-# <p align="center">TeBoRs <br> ### <p align="center">For [Discourse Forums](http://discourse.org)
+# <p align="center">TeBoRs <br> 
+### <p align="center">For [Discourse Forums](http://discourse.org)
 <p align="center"> Simple, Useful and OpenSource
 
 ---
