@@ -4,7 +4,7 @@
 
 ---
 
-[![Build Status](https://img.shields.io/travis/barreeeiroo/TeBoRs.svg)](https://barreeeiroo.github.io/TeBoRs)
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg?style=flat-square)](https://github.com/barreeeiroo/TeBoRs)
 ### Table of Contents
   * [What is this bot for](#getting-started)
   * [Installation](#writing-your-first-bot)
