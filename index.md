@@ -90,19 +90,19 @@ git clone -b discourse https://github.com/barreeeiroo/TeBoRs
 
 When you have succesfully cloned it, open `config.py` file using an editor like _nano_ or _vim_ and change these settings:
 
-- **API_TOKEN     ** = Setup your own BotFather ApiToken
-- **ADMIN_NAME    ** = Your Telegram Name
-- **ADMIN_NICKAME ** = Your Telegram Nickname
-- **ADMIN_ID      ** = Your Telegram ID
-- **GROUP_NAME    ** = The main group nickname if it's publick, or the name if it's private
-- **GROUP_ID      ** = The group ID
-- **FORUM_NAME    ** = The name of the Discourse Forum
+- **API_TOKEN** = Setup your own BotFather ApiToken
+- **ADMIN_NAME** = Your Telegram Name
+- **ADMIN_NICKAME** = Your Telegram Nickname
+- **ADMIN_ID** = Your Telegram ID
+- **GROUP_NAME** = The main group nickname if it's publick, or the name if it's private
+- **GROUP_ID** = The group ID
+- **FORUM_NAME** = The name of the Discourse Forum
 - **FORUM_PROTOCOL** = The protocol that you are actually using (https or http)
-- **FORUM_URL     ** = The domain for your community
-- **DB_NAME       ** = Your MySQL database
-- **DB_HOST       ** = Your MySQL host (usually `localhost`)
-- **DB_USER       ** = Your MySQL user
-- **DB_PASS       ** = Your MySQL user's password
+- **FORUM_URL** = The domain for your community
+- **DB_NAME** = Your MySQL database
+- **DB_HOST** = Your MySQL host (usually `localhost`)
+- **DB_USER** = Your MySQL user
+- **DB_PASS** = Your MySQL user's password
 
 ---
 
@@ -122,7 +122,7 @@ and with it if you close your screen the bot will be running in the background
 
 ---
 
-### Updtate
+### Update
 To update the bot to the latest version, just run this command in your folder:
 
 ```bash
@@ -134,3 +134,7 @@ But if you get any error like _Files must be commited_ or similar, then save you
 ---
 ---
 
+## How to use
+This is a part to teach users and admins for how to sue the bot
+
+### Admins
