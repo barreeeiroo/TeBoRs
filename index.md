@@ -1,8 +1,8 @@
-# <cemter>TeBoRs</center>
+# <center>TeBoRs</center>
 <br>
-### <center>For [Discourse Forums](http://discourse.org)</center>
+### For [Discourse Forums](http://discourse.org)
 <br>
-<center>Simple, Useful and OpenSource</center>
+Simple, Useful and OpenSource
 <br>
 ---
 <br>
