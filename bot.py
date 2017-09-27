@@ -67,9 +67,9 @@ def update_rss():
         print("New topic in the community: " + latest_topic_online_id)
         cur.execute("INSERT INTO latest_topic (id) VALUES (\'" + latest_topic_online_id + "\');")
         bot.send_message(GROUP_ID, "*New topic in the community:* \n\n"
-        "*Title:* " + rss_url['entries'][0]['title'] + "\n" +
-        "*Category:* " + rss_url['entries'][0]['category'] + "\n" +
-        "*Author:* " + rss_url['entries'][0]['author'] + "\n\n" +
+        "*Title:* " + rss_url['entries'][0]['title'].replace("_", "\_") + "\n" +
+        "*Category:* #" + rss_url['entries'][0]['category'] + "\n" +
+        "*Author:* " + rss_url['entries'][0]['author'].replace("_", "\_") + "\n\n" +
         "_See it _[here](" + FORUM_URL + "/t/" + latest_topic_online_id + ")",
         parse_mode="markdown")
 update_rss()
